@@ -1,0 +1,25 @@
+{
+  "name": "batch2",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/batch2.js",
+  "scripts": {
+    "test": "exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ovhemert/batch2.git"
+  },
+  "engines": {
+    "node": ">=8.6.0"
+  },
+  "author": "Osmond van Hemert <osmond@vanhemert.nu>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ovhemert/batch2/issues"
+  },
+  "homepage": "https://github.com/ovhemert/batch2#readme",
+  "dependencies": {
+    "through2": "^3.0.0"
+  }
+}
