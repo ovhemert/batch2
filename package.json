@@ -4,8 +4,12 @@
   "description": "",
   "main": "src/batch2.js",
   "scripts": {
-    "test": "exit 0"
+    "lint": "standard",
+    "test": "standard && tap test/*.test.js --coverage --100",
+    "test:report": "standard && tap test/*.test.js --coverage  --coverage-report=html --100",
+    "posttest": "tap --coverage --coverage-report=lcovonly"
   },
+  "keywords": ["batch", "bulk", "chunk", "stream", "through2", "transform"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ovhemert/batch2.git"
@@ -21,5 +25,11 @@
   "homepage": "https://github.com/ovhemert/batch2#readme",
   "dependencies": {
     "through2": "^3.0.0"
+  },
+  "devDependencies": {
+    "readable-stream": "^3.2.0",
+    "standard": "^12.0.1",
+    "stream-mock": "^1.2.0",
+    "tap": "^12.5.3"
   }
 }
