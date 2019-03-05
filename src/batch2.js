@@ -3,7 +3,7 @@
 const through2 = require('through2')
 
 function batch2 (options, transform, flush) {
-  const batchSize = options.batchSize || 10
+  const batchSize = options.size || 10
   let _buffer = []
 
   function _flush (callback) {
