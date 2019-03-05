@@ -63,6 +63,3 @@ See the [CONTRIBUTING](./docs/CONTRIBUTING.md) file for details.
 ## License
 
 Licensed under [MIT](./LICENSE).
-
-[pino]: https://www.npmjs.com/package/pino
-[stackdriver]: https://cloud.google.com/logging/
