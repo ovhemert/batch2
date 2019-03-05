@@ -1,159 +1,109 @@
-const { WritableMock } = require('stream-mock')
-const { Readable } = require('readable-stream')
+'use strict'
 
 const test = require('tap').test
 
 const batch2 = require('../src/batch2')
 
-test('stream small string', t => {
+test('stream single string', t => {
   t.plan(1)
 
   const data = '12345'
-
-  const readStream = new Readable()
-  data.split('').forEach(d => readStream.push(d)); readStream.push(null)
-  const transformStream = batch2().on('error', (err) => {
+  const b2 = batch2().on('data', data => {
+    const res = data.toString('ascii')
+    t.equal(res, '12345')
+  }).on('error', err => {
     t.fail(err.message)
   })
-  const writeStream = new WritableMock({ objectMode: false }).on('finish', () => {
-    const res = writeStream.data.toString()
-    t.ok(res === data)
-  })
-
-  readStream.pipe(transformStream).pipe(writeStream)
+  b2.write(data)
+  b2.end()
 })
 
-test('stream large string', t => {
+test('stream multiple strings', t => {
+  t.plan(5)
+
+  const data = '12345'.repeat(10)
+  const b2 = batch2().on('data', data => {
+    const res = data.toString('ascii')
+    t.equal(res, '1234512345')
+  }).on('error', err => {
+    t.fail(err.message)
+  })
+  data.split('').forEach(c => b2.write(c))
+  b2.end()
+})
+
+test('stream single object', t => {
+  t.plan(2)
+
+  const data = { x: '12345' }
+  const b2 = batch2.obj().on('data', data => {
+    t.equal(data.length, 1)
+    t.deepEqual(data[0], { x: '12345' })
+  }).on('error', err => {
+    t.fail(err.message)
+  })
+  b2.write(data)
+  b2.end()
+})
+
+test('stream multiple objects', t => {
+  t.plan(10)
+
+  const data = '11111'.repeat(10)
+  const b2 = batch2.obj().on('data', data => {
+    t.equal(data.length, 10)
+    const res = '1'.repeat(10).split('').map(c => { return { x: c } })
+    t.deepEqual(data, res)
+  }).on('error', err => {
+    t.fail(err.message)
+  })
+  data.split('').forEach(c => b2.write({ x: c }))
+  b2.end()
+})
+
+test('stream multiple objects with transform', t => {
+  t.plan(10)
+
+  const data = '11111'.repeat(10)
+  const b2 = batch2.obj(function (chunk, enc, callback) {
+    const y = (chunk.x * 2).toString()
+    callback(null, { y })
+  }).on('data', data => {
+    t.equal(data.length, 10)
+    const res = '2'.repeat(10).split('').map(c => { return { y: c } })
+    t.deepEqual(data, res)
+  }).on('error', err => {
+    t.fail(err.message)
+  })
+  data.split('').forEach(c => b2.write({ x: c }))
+  b2.end()
+})
+
+test('fail on transform', t => {
   t.plan(1)
 
-  const data = '12345'.repeat(1000)
-
-  const readStream = new Readable()
-  data.split('').forEach(d => readStream.push(d)); readStream.push(null)
-  const transformStream = batch2().on('error', (err) => {
-    t.fail(err.message)
+  const data = 'Something went wrong.'
+  const b2 = batch2(function (chunk, enc, callback) {
+    callback(new Error(data))
+  }).on('data', data => {
+    t.fail('Should not emit data.')
+  }).on('error', err => {
+    t.equal(err.message, data)
   })
-  const writeStream = new WritableMock({ objectMode: false }).on('finish', () => {
-    const res = writeStream.data.toString()
-    t.ok(res === data)
-  })
-
-  readStream.pipe(transformStream).pipe(writeStream)
+  b2.write('test')
+  b2.end()
 })
 
-test('stream few objects', t => {
+test('stream single object with default constructor', t => {
   t.plan(2)
 
-  const data = '12345'
-
-  const readStream = new Readable({ objectMode: true })
-  data.split('').forEach(d => readStream.push({ x: d })); readStream.push(null)
-  const transformStream = batch2.obj().on('error', (err) => {
+  const data = { x: '12345' }
+  const b2 = batch2({ objectMode: true }).on('data', data => {
+    t.equal(data.length, 1)
+    t.deepEqual(data[0], { x: '12345' })
+  }).on('error', err => {
     t.fail(err.message)
   })
-  const writeStream = new WritableMock({ objectMode: true }).on('finish', () => {
-    t.ok(writeStream.data.length === 1)
-    const res = writeStream.data.reduce((prev, curr) => { return prev.concat(curr.map(c => c.x).join('')) }, '')
-    t.ok(res === data)
-  })
-
-  readStream.pipe(transformStream).pipe(writeStream)
+  b2.write(data)
+  b2.end()
 })
-
-test('stream many objects', t => {
-  t.plan(2)
-
-  const data = '12345'.repeat(1000)
-
-  const readStream = new Readable({ objectMode: true })
-  data.split('').forEach(d => readStream.push({ x: d })); readStream.push(null)
-  const transformStream = batch2.obj().on('error', (err) => {
-    t.fail(err.message)
-  })
-  const writeStream = new WritableMock({ objectMode: true }).on('finish', () => {
-    t.ok(writeStream.data.length === 500)
-    const res = writeStream.data.reduce((prev, curr) => { return prev.concat(curr.map(c => c.x).join('')) }, '')
-    t.ok(res === data)
-  })
-
-  readStream.pipe(transformStream).pipe(writeStream)
-})
-
-test('stream object with default constructor', t => {
-  t.plan(2)
-
-  const data = { x: 1 }
-
-  const readStream = new Readable({ objectMode: true })
-  readStream.push(data); readStream.push(null)
-  const transformStream = batch2({ objectMode: true }).on('error', (err) => {
-    t.fail(err.message)
-  })
-  const writeStream = new WritableMock({ objectMode: true }).on('finish', () => {
-    t.ok(writeStream.data.length === 1)
-    const res = writeStream.data[0][0]
-    t.ok(res.x === data.x)
-  })
-
-  readStream.pipe(transformStream).pipe(writeStream)
-})
-
-test('stream objects with custom transform', t => {
-  t.plan(2)
-
-  const data = '1234'
-
-  const readStream = new Readable({ objectMode: true })
-  data.split('').forEach(d => readStream.push(d)); readStream.push(null)
-  const transformStream = batch2.obj(function (chunk, enc, callback) {
-    callback(null, chunk * 2)
-  }).on('error', (err) => {
-    t.fail(err.message)
-  })
-  const writeStream = new WritableMock({ objectMode: true }).on('finish', () => {
-    t.ok(writeStream.data.length === 1)
-    const res = writeStream.data.reduce((prev, curr) => { return prev.concat(curr.join('')) }, '')
-    t.ok(res === '2468')
-  })
-
-  readStream.pipe(transformStream).pipe(writeStream)
-})
-
-test('fail on objects with error in custom transform', t => {
-  t.plan(1)
-
-  const data = '1234'
-
-  const readStream = new Readable({ objectMode: true })
-  readStream.push(data); readStream.push(null)
-  const transformStream = batch2.obj(function (chunk, enc, callback) {
-    callback(new Error('Something went wrong.'))
-  }).on('error', (err) => {
-    t.ok(err.message === 'Something went wrong.')
-  })
-  const writeStream = new WritableMock({ objectMode: true }).on('finish', () => {
-    t.fail()
-  })
-  readStream.pipe(transformStream).pipe(writeStream)
-})
-
-// test('stream objects with custom flush', t => {
-//   t.plan(2)
-
-//   const data = '12345'
-
-//   const readStream = new Readable({ objectMode: true })
-//   data.split('').forEach(d => readStream.push(d)); readStream.push(null)
-//   const transformStream = batch2.obj(function (chunk, enc, callback) {
-//     callback(null, chunk)
-//   }).on('error', (err) => {
-//     t.fail(err.message)
-//   })
-//   const writeStream = new WritableMock({ objectMode: true }).on('finish', () => {
-//     t.ok(writeStream.data.length === 1)
-//     const res = writeStream.data.reduce((prev, curr) => { return prev.concat(curr.join('')) }, '')
-//     t.ok(res === '12345')
-//   })
-
-//   readStream.pipe(transformStream).pipe(writeStream)
-// })
