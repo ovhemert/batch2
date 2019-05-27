@@ -32,7 +32,7 @@ $ npm install batch2
 
 ## API
 
-<b><code>batch2( [ options ], [ transformFunction ])</code></b>
+<b><code>batch2([options], [transformFunction])</code></b>
 
 Consult the **[stream.Transform](http://nodejs.org/docs/latest/api/stream.html#stream_class_stream_transform)** documentation for the exact rules of the `transformFunction` (i.e. `this._transform`) and the optional `flushFunction` (i.e. `this._flush`).
 
