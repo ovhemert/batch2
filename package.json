@@ -1,6 +1,6 @@
 {
   "name": "batch2",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A transform stream that collects chunks and passes them on as batches",
   "main": "src/batch2.js",
   "scripts": {
