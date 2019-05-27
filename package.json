@@ -26,7 +26,7 @@
   "engines": {
     "node": ">=8.6.0"
   },
-  "author": "Osmond van Hemert <osmond@vanhemert.nu>",
+  "author": "Osmond van Hemert <hello@ovhemert.dev> (https://ovhemert.dev)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ovhemert/batch2/issues"

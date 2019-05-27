@@ -32,7 +32,7 @@ $ npm install batch2
 
 ## API
 
-<b><code>batch2([ options, ] [ transformFunction ])</code></b>
+<b><code>batch2( [ options ], [ transformFunction ])</code></b>
 
 Consult the **[stream.Transform](http://nodejs.org/docs/latest/api/stream.html#stream_class_stream_transform)** documentation for the exact rules of the `transformFunction` (i.e. `this._transform`) and the optional `flushFunction` (i.e. `this._flush`).
 
@@ -53,12 +53,14 @@ If you **do not provide a `transformFunction`** then you will get a simple pass-
 ## Maintainers
 
 Osmond van Hemert
-[![Github](https://img.shields.io/badge/-website.svg?style=social&logoColor=333&logo=github)](https://github.com/ovhemert/about)
-[![Web](https://img.shields.io/badge/-website.svg?style=social&logoColor=333&logo=nextdoor)](https://www.osmondvanhemert.nl)
+[![Github](https://img.shields.io/badge/-website.svg?style=social&logoColor=333&logo=github)](https://github.com/ovhemert)
+[![Web](https://img.shields.io/badge/-website.svg?style=social&logoColor=333&logo=nextdoor)](https://ovhemert.dev)
 
 ## Contributing
 
-See the [CONTRIBUTING](./docs/CONTRIBUTING.md) file for details.
+If you would like to help out with some code, check the [details](./docs/CONTRIBUTING.md).
+
+Not a coder, but still want to support? Have a look at the options available to [donate](https://ovhemert.dev/donate).
 
 ## License
 
