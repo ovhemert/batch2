@@ -4,7 +4,7 @@ const through2 = require('through2')
 
 function batch2 (options, transform, flush) {
   const batchSize = options.size || 10
-  let _buffer = []
+  const _buffer = []
 
   function _flush (callback) {
     // push remaining buffer
