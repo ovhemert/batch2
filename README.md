@@ -4,7 +4,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/706df16ae6124bb782e7e4a78a0bcfc3)](https://www.codacy.com/app/ovhemert/batch2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ovhemert/batch2&amp;utm_campaign=Badge_Grade)
 [![Known Vulnerabilities](https://snyk.io/test/npm/batch2/badge.svg)](https://snyk.io/test/npm/batch2)
 [![Coverage Status](https://coveralls.io/repos/github/ovhemert/batch2/badge.svg?branch=master)](https://coveralls.io/github/ovhemert/batch2?branch=master)
-[![Greenkeeper badge](https://badges.greenkeeper.io/ovhemert/batch2.svg)](https://greenkeeper.io/)
+
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
 A transform stream that collects chunks and passes them on as batches.
