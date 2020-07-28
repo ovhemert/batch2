@@ -33,10 +33,10 @@
   },
   "homepage": "https://github.com/ovhemert/batch2#readme",
   "dependencies": {
-    "through2": "^3.0.2"
+    "through2": "^4.0.2"
   },
   "devDependencies": {
-    "standard": "^14.3.3",
-    "tap": "^14.10.6"
+    "standard": "^14.3.4",
+    "tap": "^14.10.8"
   }
 }
