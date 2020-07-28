@@ -1,6 +1,6 @@
 # batch2
 
-[![Travis](https://img.shields.io/travis/com/ovhemert/batch2.svg?branch=master&logo=travis)](https://travis-ci.com/ovhemert/batch2)
+[![CI](https://github.com/ovhemert/batch2/workflows/CI/badge.svg)](https://github.com/ovhemert/batch2/actions)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/706df16ae6124bb782e7e4a78a0bcfc3)](https://www.codacy.com/app/ovhemert/batch2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ovhemert/batch2&amp;utm_campaign=Badge_Grade)
 [![Known Vulnerabilities](https://snyk.io/test/npm/batch2/badge.svg)](https://snyk.io/test/npm/batch2)
 [![Coverage Status](https://coveralls.io/repos/github/ovhemert/batch2/badge.svg?branch=master)](https://coveralls.io/github/ovhemert/batch2?branch=master)
